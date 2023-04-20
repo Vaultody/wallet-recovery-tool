@@ -1,0 +1,92 @@
+/* styles.css */
+
+/* Add styles here to customize the appearance of your app */
+
+@import "fonts.css";
+
+@import "sidebar.css";
+
+body {
+    font-family: "Gilroy", sans-serif;
+    background-color: #fff;
+    color:#23262E;
+}
+
+h1,h2,h3,h4,h5 {
+    font-family: Gilroy, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.container {
+    max-width: 800px;
+    width: 100%;
+    overflow: hidden;
+    margin-left:80px;
+    margin-top:20px;
+}
+
+#recoveryResult {
+    width: 100%;
+}
+
+.row {
+    --bs-gutter-x: 0;
+}
+.copy{
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-self: center;
+    padding: 6px;
+    margin-left: 10px;
+}
+
+
+#generate-new-password-input{
+    max-width: 470px;
+}
+
+.rsa-key-public-col {
+    padding-right: 5px;
+}
+
+.rsa-key-private-col {
+    padding-left: 5px;
+}
+
+#generate-rsa-result-container {
+    padding-top: 0;
+}
+
+.input-label {
+    margin: auto;
+    width: 50%;
+}
+.form-control{
+    border: 1px solid #CECECE;
+    height: 64px;
+}
+select.form-control {
+    -webkit-appearance: menulist;
+    width: fit-content;
+}
+#copy-public-key i , #download-private-key i{
+    margin-right:5px;
+}
+.btn{
+    background-color: #23262E;
+    color:#fff;
+    border-radius: 10px;
+    border-color: #23262E;
+    font-family: "Gilroy-Bold", sans-serif;
+}
+.btn:hover, .btn-item:active, .btn:focus {
+    background-color: #363942;
+    box-shadow: none;
+    border-color: #363942;
+}
