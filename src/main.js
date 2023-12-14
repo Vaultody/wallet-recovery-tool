@@ -1,6 +1,6 @@
-const {app, BrowserWindow, ipcMain} = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 
-const {IS_MAC} = require('./config');
+const { IS_MAC } = require('./config');
 const Base = require('./base');
 const RecoverService = require('./services/recover');
 const UtilityService = require('./services/utility');
@@ -34,6 +34,7 @@ app.whenReady().then(() => {
     ipcMain.handle("utility:generate-password", utilityService.generatePassword.bind(utilityService));
     ipcMain.handle('utility:open-link', utilityService.openLinkInBrowser.bind(utilityService));
     ipcMain.handle('utility:clipboard-copy', utilityService.clipboardCopy.bind(utilityService));
+    ipcMain.handle('utility:clipboard-paste', utilityService.clipboardPaste.bind(utilityService));
 
     ipcMain.on('screen:generate-password', screenService.renderPasswordGeneratorView.bind(screenService));
     ipcMain.on('screen:rsa-key-generator', screenService.renderRsaKeyGeneratorView.bind(screenService));
