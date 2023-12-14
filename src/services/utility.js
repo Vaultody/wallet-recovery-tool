@@ -1,6 +1,6 @@
 'use strict';
 
-const {shell, clipboard} = require('electron');
+const { shell, clipboard } = require('electron');
 const generator = require('generate-password');
 const BaseService = require('./base');
 
@@ -44,6 +44,15 @@ class UtilityService extends BaseService {
      */
     clipboardCopy(event, text) {
         clipboard.writeText(text);
+    }
+
+    /**
+     * @param {Object} event 
+     * @returns {string}
+     */
+    clipboardPaste(event) {
+        const text = clipboard.readText();
+        return text;
     }
 }
 

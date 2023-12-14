@@ -2,6 +2,32 @@ let recoveryDataPath, rsaPath;
 
 const recoveryDataFileButton = document.getElementById("recoveryDataFileButton");
 const recoveryDataFileText = document.getElementById("recoveryDataFileText");
+const recoverRSAPassword = document.getElementById("recoverRSAPassword");
+
+recoverRSAPassword.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    window.api.invoke('utility:clipboard-paste', [])
+        .then(text => {
+            recoverRSAPassword.value = text;
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}, false);
+
+recoverRSAPassword.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) {
+        e.preventDefault();
+        window.api.invoke('utility:clipboard-paste', [])
+            .then(text => {
+                recoverRSAPassword.value = text;
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+});
+
 recoveryDataFileButton.addEventListener("click", function () {
     window.api.invoke("file:recovery-data").then(result => {
         if (!result.canceled) {
