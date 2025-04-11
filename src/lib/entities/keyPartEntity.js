@@ -1,49 +1,31 @@
 'use strict';
 
-const BaseEntity = require("./baseEntity");
+const BaseKeyPartEntity = require("./baseKeyPartEntity");
 const BN = require("bn.js");
+const {DOMAIN_PARAMS} = require("../enumerations/curve");
+const crypto = require("crypto");
+const bip39 = require("bip39");
 
-class KeyPartEntity extends BaseEntity {
+class KeyPartEntity extends BaseKeyPartEntity {
 
     /**
-     * @return {Object<string, BN>}
+     * @return {number}
      */
-    getValues() {
-        return this.data['values'];
+    getIndex() {
+        return this.data['index'];
     }
 
-    /**
-     * @return {Object<string, Buffer>}
-     */
-    getEncryptedValues() {
-        return this.data['encryptedValues'];
-    }
-
-    /**
-     * @return {Buffer}
-     */
-    getCommitment() {
-        return this.data['commitment'];
+    getData() {
+        return Buffer.from(this.data['data'], "base64");
     }
 
     /**
      * @inheritDoc
      */
     _prepareData(data) {
-        const values = {};
-        for (const key in data['values']) {
-            values[key] = new BN(Buffer.from(data['values'][key], 'base64'), 16);
-        }
-
-        const encryptedValues = {};
-        for (const key in data['encrypted_values']) {
-            encryptedValues[key] = Buffer.from(data['encrypted_values'][key], 'base64');
-        }
-
         return {
-            commitment: Buffer.from(data['commitment'], 'base64'),
-            values: values,
-            encryptedValues: encryptedValues,
+            index: data.index,
+            data: data.data,
         }
     }
 
@@ -52,7 +34,18 @@ class KeyPartEntity extends BaseEntity {
      * @protected
      */
     _getRequiredAttributes() {
-        return ['commitment', 'values', 'encrypted_values'];
+        return ['data', 'index'];
+    }
+
+    /**
+     * @param {Buffer} ersPrivateKey
+     * @param {string} curve
+     * returns {BN}
+     */
+    recoverKeyShare(ersPrivateKey, curve) {
+        const mnemonic = crypto.privateDecrypt({key: ersPrivateKey, oaepHash: "sha256"}, this.getData());
+
+        return new BN(bip39.mnemonicToEntropy(mnemonic.toString()), 16).mod(DOMAIN_PARAMS[curve].n);
     }
 }
 

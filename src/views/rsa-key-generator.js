@@ -1,33 +1,9 @@
 const generateRsaKeyButton = document.getElementById("generate-button");
 const generateRsaResultContainer = document.getElementById("generate-rsa-result-container");
-const passwordInput = document.getElementById("password");
-
-passwordInput.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-    window.api.invoke('utility:clipboard-paste', [])
-        .then(text => {
-            passwordInput.value = text;
-        })
-        .catch(err => {
-            console.log(err);
-        })
-}, false);
-
-passwordInput.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) {
-        e.preventDefault();
-        window.api.invoke('utility:clipboard-paste', [])
-            .then(text => {
-                passwordInput.value = text;
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-});
 
 generateRsaKeyButton.addEventListener('click', () => {
     const password = document.getElementById("password").value;
+
     generateRsaResultContainer.innerHTML = "<div id=\"loading\" class=\"d-flex justify-content-center\">\n" +
         "<div class=\"spinner-border\" role=\"status\">\n" +
         "<span class=\"visually-hidden\">Loading...</span>\n" +

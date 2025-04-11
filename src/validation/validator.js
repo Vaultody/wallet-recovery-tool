@@ -2,6 +2,7 @@ const validator = require('validate.js')
     , PasswordValidator = require('password-validator')
     , sjclEncryptedPrivateKeyConstraints = require('./constraints/sjclEncryptedPrivateKey')
     , recoveryDataConstraints = require('./constraints/recoveryData')
+    , recoveryDataSharedConstraints = require('./constraints/recoveryDataShared')
     , privateKeyTypeEnum = require("../lib/enumerations/privateKeyType")
     , crypto = require("crypto")
 ;
@@ -52,7 +53,11 @@ class Validator {
      * @return {boolean}
      */
     validateRecoveryData(data) {
-        return this.validator.validate(data, recoveryDataConstraints);
+        let validationResult = this.validator.validate(data, recoveryDataConstraints);
+        if (validationResult) {
+            validationResult = this.validator.validate(data, recoveryDataSharedConstraints);
+        }
+        return validationResult;
     }
 
     /**

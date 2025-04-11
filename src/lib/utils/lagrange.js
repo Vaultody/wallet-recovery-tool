@@ -29,5 +29,5 @@ module.exports.reconstruct = (indices, values, n) => {
         denominator = denominator.add(value);
     }
 
-    return numerator.mul(denominator.invm(n));
+    return numerator.mul(denominator.invm(n)).mod(n);
 }
