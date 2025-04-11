@@ -57,14 +57,12 @@ function deriveChildEDDSA(privateKey, chainCode, index) {
         .update(Buffer.concat([Buffer.from("03", 'hex'), masterPublicKey, indexBuff])).digest();
 
     const derivedPrivateKey = privateKeyBn.mul(keyOffsetDigestBn).mod(domainParams.n);
-    const derivedPublicKeyPoint = domainParams.g.mul(derivedPrivateKey);
-    const derivedPublicKey = curveUtils.encodePoint(CURVE.ED25519, derivedPublicKeyPoint);
 
     return serialize({
         key: derivedPrivateKey.toBuffer(),
         chainCode: derivedChainCode,
         depth: 1,
-        fingerprint: generateFingerprint(Buffer.from(derivedPublicKey)),
+        fingerprint: 0,
         index: 0
     });
 }
@@ -89,17 +87,6 @@ function serialize({key, chainCode, depth = 0, fingerprint = 0, index = 0}) {
     preparedKey.copy(buffer, 45);
 
     return b58.encode(buffer);
-}
-
-/**
- * @param {Buffer} publicKey
- * @return {number}
- */
-function generateFingerprint(publicKey) {
-    const sha = crypto.createHash('sha256').update(publicKey).digest();
-    const ripemd = crypto.createHash('ripemd160').update(sha).digest();
-
-    return ripemd.subarray(0, 4).readUInt32BE(0)
 }
 
 module.exports = {

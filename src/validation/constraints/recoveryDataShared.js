@@ -25,13 +25,17 @@ module.exports = {
         },
         "type": "array",
         "objectArray": {
-            "index": {
-                "presence": true,
-                "type": "number",
-            },
-            "data": {
+            "commitment": {
                 "presence": true,
                 "type": "string",
+            },
+            "values": {
+                "presence": true,
+                "type": "object",
+            },
+            "encrypted_values": {
+                "presence": true,
+                "type": "object",
             },
         },
     }
