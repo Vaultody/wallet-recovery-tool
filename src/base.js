@@ -23,6 +23,27 @@ class Base {
             app.quit();
         });
 
+        mainWindow.webContents.on('context-menu', (e, props) => {
+            const { selectionText, isEditable } = props;
+            if (isEditable || selectionText.length > 0) {
+                const menuTemplate = [];
+                if (isEditable) {
+                    menuTemplate.push({ role: 'undo' });
+                    menuTemplate.push({ role: 'redo' });
+                    menuTemplate.push({ type: 'separator' });
+                    menuTemplate.push({ role: 'cut' });
+                }
+                menuTemplate.push({ role: 'copy' });
+                if (isEditable) {
+                    menuTemplate.push({ role: 'paste' });
+                    menuTemplate.push({ role: 'delete' });
+                    menuTemplate.push({ type: 'separator' });
+                    menuTemplate.push({ role: 'selectAll' });
+                }
+                Menu.buildFromTemplate(menuTemplate).popup(mainWindow);
+            }
+        });
+
         return mainWindow;
     }
 
